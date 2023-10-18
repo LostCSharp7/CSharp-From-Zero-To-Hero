@@ -18,7 +18,34 @@ namespace BootCamp.Chapter
         /// <returns>One of the arrow characters. '↥' by default.</returns>
         public static char GetIndicator(char symbol)
         {
-            return '-';
+            Encoding enc = Encoding.Unicode;
+            string str = "WASDwasd";
+            if (str.Contains(symbol))
+            {
+                switch (symbol)
+                {
+                    case 'W':
+                    case 'w':
+                        return '↥';
+
+                    case 'A':
+                    case 'a':
+                        return '↤';
+
+                    case 'S':
+                    case 's':
+                        return '↧';
+
+                    case 'd':
+                    case 'D':
+                        return '↦';
+
+                    default:
+                        return '↥';
+                }
+
+            }
+            return '↥';
         }
     }
 }
