@@ -11,12 +11,49 @@ namespace BootCamp.Chapter
     {
         public static string Encrypt(string message, byte shift)
         {
-            return message;
+            if(message == null)
+            {
+                return null;
+            }
+            if(message.Length == 0) 
+            {
+                return "";
+            }
+            var stringbuilder = new StringBuilder();
+            foreach(var c in message) 
+            {
+                int i = c + shift;
+                if(i > 255)
+                {
+                    i -=255;
+                }
+                stringbuilder.Append((char)(i));
+            }
+            return stringbuilder.ToString();
         }
 
         public static string Decrypt(string message, byte shift)
         {
-            return message;
+            if (message == null)
+            {
+                return null;
+            }
+            if (message.Length == 0)
+            {
+                return "";
+            }
+
+            var stringbuilder = new StringBuilder();
+            foreach (var c in message)
+            {
+                int i = c - shift;
+                if (i < 0)
+                {
+                    i += 255;
+                }
+                stringbuilder.Append((char)(i));
+            }
+            return stringbuilder.ToString();   
         }
     }
 }
