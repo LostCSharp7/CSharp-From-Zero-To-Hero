@@ -15,6 +15,19 @@
         }
 
         private float _weight;
+        public float GetWeight()
+        {
+            return _weight;
+        }
+        public virtual decimal GetDefence() 
+        {
+            return 0;
+        }
+
+        public virtual decimal GetAttack()
+        {
+            return 0;
+        }
 
         public Item(string name, decimal price, float weight)
         {

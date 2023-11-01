@@ -1,4 +1,6 @@
 ﻿using BootCamp.Chapter.Items;
+using System;
+using System.Linq;
 
 namespace BootCamp.Chapter
 {
@@ -34,8 +36,26 @@ namespace BootCamp.Chapter
         /// </summary>
         private Equipment _equipment;
 
-        public Player()
+        public Player(int strength)
         {
+            _strenght = strength;
+            _inventory = new Inventory();
+            _equipment = new Equipment();
+        }
+
+        public int GetMaxWeight()
+        {
+            return (baseCarryWeight + _strenght * 10);
+        }
+
+        public decimal GetTotalttack()
+        {
+            return _equipment.GetTotalAttack();
+        }
+
+        public decimal GetTotalDefense()
+        {
+            return _equipment.GetTotalDefense();
         }
 
         /// <summary>
@@ -43,7 +63,7 @@ namespace BootCamp.Chapter
         /// </summary>
         public Item[] GetItems()
         {
-            return new Item[0];
+            return _inventory.GetItems();
         }
 
         /// <summary>
@@ -51,11 +71,12 @@ namespace BootCamp.Chapter
         /// </summary>
         public void AddItem(Item item)
         {
+            _inventory.AddItem(item);
         }
 
         public void Remove(Item item)
         {
-
+            _inventory.RemoveItem(item);
         }
 
         /// <summary>
@@ -64,7 +85,26 @@ namespace BootCamp.Chapter
         /// <param name="name"></param>
         public Item[] GetItems(string name)
         {
-            return new Item[0];
+            Item[] items = _inventory.GetItems();
+            Item[] MatchedItems = new Item[0];
+            if (string.IsNullOrEmpty(name))
+            {
+                return MatchedItems;
+            }
+            
+            foreach(Item item in items)
+            {
+                if(string.Compare(item.GetName(), name) ==0)
+                {
+                    if(MatchedItems.Length == 0)
+                    {
+                        MatchedItems = new Item[1] { item };
+                    }
+
+                    MatchedItems.Append(item);
+                }
+            }
+            return MatchedItems;
         }
 
         #region Extra challenge: Equipment
@@ -73,34 +113,77 @@ namespace BootCamp.Chapter
         // When a slot is equiped, it contributes to total defense
         // and total attack.
         // Implement equiping logic and total defense/attack calculation.
+
+        private bool CheckIfMaxWtReched(float ItemWt)
+        {
+            
+            if((_equipment.GetTotalWeight() + ItemWt) <= GetMaxWeight())
+            {
+                return false;
+            }
+            return true;
+        }
+
         public void Equip(Headpiece head)
         {
-
+            if(CheckIfMaxWtReched(head.GetWeight()))
+            {
+                Console.WriteLine($"Maximum weight Reached, cannot equip item: {head.GetName()}");
+                return; 
+            }
+            _equipment.SetHead(head);
         }
 
-        public void Equip(Chestpiece head)
+        public void Equip(Chestpiece chest)
         {
-
+            if (CheckIfMaxWtReched(chest.GetWeight()))
+            {
+                Console.WriteLine($"Maximum weight Reached, cannot equip item: {chest.GetName()}");
+                return;
+            }
+            _equipment.SetChest(chest);
         }
 
-        public void Equip(Shoulderpiece head, bool isLeft)
+        public void Equip(Shoulderpiece Shoulder, bool isLeft)
         {
-
+            if (CheckIfMaxWtReched(Shoulder.GetWeight()))
+            {
+                Console.WriteLine($"Maximum weight Reached, cannot equip item: {Shoulder.GetName()}");
+                return;
+            }
+            if (isLeft) _equipment.SetLeftShoulder(Shoulder);
+            else _equipment.SetRightShoulder(Shoulder);
         }
 
-        public void Equip(Legspiece head)
+        public void Equip(Legspiece leg)
         {
-
+            if (CheckIfMaxWtReched(leg.GetWeight()))
+            {
+                Console.WriteLine($"Maximum weight Reached, cannot equip item: {leg.GetName()}");
+                return;
+            }
+            _equipment.SetLeg(leg);
         }
 
-        public void Equip(Armpiece head, bool isLeft)
+        public void Equip(Armpiece Arm, bool isLeft)
         {
-
+            if (CheckIfMaxWtReched(Arm.GetWeight()))
+            {
+                Console.WriteLine($"Maximum weight Reached, cannot equip item: {Arm.GetName()}");
+                return;
+            }
+            if (isLeft) _equipment.SetLeftArmp(Arm);
+            else _equipment.SetRightArm(Arm);
         }
 
-        public void Equip(Gloves head)
+        public void Equip(Gloves glove)
         {
-
+            if (CheckIfMaxWtReched(glove.GetWeight()))
+            {
+                Console.WriteLine($"Maximum weight Reached, cannot equip item: {glove.GetName()}");
+                return;
+            }
+            _equipment.SetGloves(glove);
         }
         #endregion
     }
