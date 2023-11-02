@@ -7,9 +7,19 @@ namespace BootCamp.Chapter
 {
     public class MacFactory
     {
+       
         public DesktopComputer Assemble()
         {
-            return new DesktopComputer();
+            MacComputer MacComputer = new MacComputer();
+            MacComputer.GetBody().InstallBody();
+            MacComputer.GetMotherboard().installMotherBoard();
+            MacComputer.GetCpu().InstallCPU();
+            MacComputer.GetGpu().InstallGPU();
+            MacComputer.GetHard().installHardisk();
+            MacComputer.GetRam().installRam();
+
+            return MacComputer;
+            //return new DesktopComputer();
         }
     }
 }
